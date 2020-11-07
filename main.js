@@ -1,61 +1,42 @@
-// let countries = [];
+// GETTING THE API — THIS IS NOT CORRECT ACCORDING TO FUNCTIONAL PARADIGM, I TRIED DOING IT DIFFERENTLY BUT IT NEVER WORKED...
+let countries = [];
+const body = document.querySelector("body");
 
-// async function loadCountries(region) {
-//     const res = await fetch(`https://restcountries.eu/rest/v2/region/${region}`);
+// Load API with information on world countries
+async function loadCountries() {
+    const res = await fetch('https://restcountries.eu/rest/v2/all');
 
-//     if (!res.ok) {
-//         console.log('Error');
-//     } else {
-//         console.log(`Ok, got ${region}`);
-//         return await res.json();
-//     }
-// }
-
-// regionBtns.forEach(function (btn) {
-//     btn.addEventListener('click', async () => {
-//         try {
-//             countries = await loadCountries(btn.id);
-//         } catch (err) {
-//             error.innerHTML = (`<h1 class="alert">Something went wrong... please try again.</h3>`);
-//         }
-
-//         return countries;
-//     });
-// });
-
-// console.log(countries);
-
-// // On dom load, the loadcountries function is run and tries to assign the JSON string to the countries object, else it console logs the error and changes the DOM contents
-// document.addEventListener("DOMContentLoaded", async () => {
-//     try {
-//         countries = await loadCountries();
-//     } catch (err) {
-//         console.log(`Attn! ${err}`);
-//         body.innerHTML = (`<h1 class="alert">Something went wrong... please try refreshing the page.</h3>`);
-//     }
-
-//     return countries;
-// });
-
-const regionBtns = document.querySelectorAll(".regionBtn");
-const error = document.querySelector(".error");
-
-function getCountries(region) {
-    fetch(`https://restcountries.eu/rest/v2/region/${region}`)
-        .then(res => {
-            if (!res.ok) {
-                throw new Error('Network response error');
-            } else {
-                return res.json();
-            }
-        })
-        .then(data => console.log(data))
-        .catch(err => {
-            console.log(err);
-            error.innerHTML = (`<h3>Something went wrong... please try again</h3>`)
-        });
+    //Throws error is result is not OK (results are not OK if they don't return a code between 200 and 299), else it returns the data as JSON
+    if (!res.ok) {
+        throw new Error('Network response error');
+    } else {
+        return await res.json();
+    }
 }
 
-const europe = getCountries('europe');
+// On dom load, the loadcountries function is run and tries to assign the JSON string to the countries object, else it console logs the error and changes the DOM contents
+document.addEventListener("DOMContentLoaded", async () => {
+    try {
+        countries = await loadCountries();
+    } catch (err) {
+        console.error(`Attn! ${err}`);
+        body.innerHTML = (`<h1 class="alert">Something went wrong... please try refreshing the page.</h3>`);
+    }
 
-console.log(europe);
+    return countries;
+});
+
+////////////
+
+const regionBtn = document.querySelectorAll(".regionBtn");
+
+regionBtn.forEach(btn => {
+    btn.addEventListener('click', e => {
+        console.log(countries);
+        const thisRegion = countries.filter(country => country.region === btn.id);
+        console.log(thisRegion)
+    });
+});
+
+
+
