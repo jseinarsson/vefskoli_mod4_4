@@ -1,207 +1,202 @@
-'use strict';
-// Despite many attempts, I just couldn't figure out how to get the api data in a way other than defining an empty object using let, which shouldn't be used in functional programming. If you have any ideas how to fix this code so it doesn't use let, please tell me!
+// 'use strict';
 
-// let data = [];
-
-// async function loadPresidents() {
-//     const res = await fetch('./presidents.json');
-    
-//     if (!res.ok) {
-//         throw new Error('Network response error')
-//     } else {
-//         return await res.json();
-//     }
-// }
-
-// document.addEventListener('DOMContentLoaded', async () => {
-//     try {
-//         data = await loadPresidents();
-//     } catch (err) {
-//         console.log(`Attn! ${err}`);
-//         body.innerHTML = (`<h3 class="alert">Something went wrong... please try refreshing the page.</h3>`);
-//     }
-
-//     return data;
-// });
-
+// I created my own dataset with data on every president elected since 1960
 const presidents = [
     {
-        "no": 35,
-        "name": "John F.",
-        "surname": "Kennedy",
-        "dob": {"d": 29, "m": 5, "y": 1917},
-        "dod": {"d": 22, "m": 11, "y": 1963},
-        "start": {"d": 20, "m": 1, "y": 1961},
-        "end": {"d": 22, "m": 11, "y": 1963},
-        "party": "Democratic",
-        "elections": [1960],
-        "vp": "Lyndon B. Johnson",
-        "race": "Caucasian",
-        "gender": "Male"
+        name: "John F. Kennedy",
+        president: 35,
+        ageInauguration: {years: 43, days: 236},
+        ethnicity: "Caucasian",
+        gender: "Male",
+        party: "Democratic",
+        elections: {year: 1960, won: true, opponent: "Richard Nixon"}, 
+        tookOffice: {d: 20, m: 1, y: 1961},
+        leftOffice: {d: 22, m: 11, y: 1963},
+        reason: "Assassinated",
+        alive: false,
+        vp: {name: "Lyndon B. Johnson", vicepresident: 37, ageInauguration: {years: 52, days: 146}, tookOffice: {d: 20, m: 1, y: 1961}, leftOffice: {d: 22, m: 11, y: 1963}, ethnicity: "Caucasian", gender: "Male"}
     },
     {
-        "no": 36,
-        "name": "Lyndon B.",
-        "surname": "Johnson",
-        "dob": {"d": 27, "m": 8, "y": 1908},
-        "dod": {"d": 22, "m": 1, "y": 1973},
-        "start": {"d": 22, "m": 11, "y": 1963},
-        "end": {"d": 20, "m": 1, "y": 1969},
-        "party": "Democratic",
-        "elections": [1964],
-        "vp": "Hubert Humphrey",
-        "race": "Caucasian",
-        "gender": "Male"
+        name: "Lyndon B. Johnson",
+        president: 36,
+        ageInauguration: {years: 55, days: 87},
+        ethnicity: "Caucasian",
+        gender: "Male",
+        party: "Democratic",
+        elections: {year: 1964, won: true, opponent: "Barry Goldwater"}, 
+        tookOffice: {d: 22, m: 11, y: 1963},
+        leftOffice: {d: 20, m: 1, y: 1969},
+        reason: "Did not seek reelection",
+        alive: false,
+        vp: {name: "Hubert Humphrey", vicepresident: 38, ageInauguration: {years: 53, days: 238}, tookOffice: {d: 20, m: 1, y: 1965}, leftOffice: {d: 20, m: 1, y: 1969}, ethnicity: "Caucasian", gender: "Male"}
     },
     {
-        "no": 37,
-        "name": "Richard",
-        "surname": "Nixon",
-        "dob": {"d": 9, "m": 1, "y": 1913},
-        "dod": {"d": 22, "m": 4, "y": 1994},
-        "start": {"d": 20, "m": 1, "y": 1969},
-        "end": {"d": 9, "m": 8, "y": 1974},
-        "party": "Republican",
-        "elections": [1968, 1972],
-        "vp": ["Spiro Agnew", "Gerald Ford"],
-        "race": "Caucasian",
-        "gender": "Male"
+        name: "Richard Nixon",
+        president: 37,
+        ageInauguration: {years: 56, days: 11},
+        ethnicity: "Caucasian",
+        gender: "Male",
+        party: "Republican",
+        elections: [{year: 1960, won: false, opponent: "John F. Kennedy"}, {year: 1968, won: true, opponent: "Hubert Humphrey"}, {year: 1972, won: true, opponent: "George McGovern"}], 
+        tookOffice: {d: 20, m: 1, y: 1969},
+        leftOffice: {d: 9, m: 8, y: 1974},
+        reason: "Resigned",
+        alive: false,
+        vp: [{name: "Spiro Agnew", vicepresident: 39, ageInauguration: {years: 50, days: 72}, tookOffice: {d: 20, m: 1, y: 1969}, leftOffice: {d: 10, m: 10, y: 1973}, ethnicity: "Caucasian", gender: "Male"}, {name: "Gerald Ford", vicepresident: 40, ageInauguration: {years: 60, days: 145}, tookOffice: {d: 6, m: 12, y: 1973}, leftOffice: {d: 9, m: 8, y: 1974}, ethnicity: "Caucasian", gender: "Male"}]
     },
     {
-        "no": 38,
-        "name": "Gerald",
-        "surname": "Ford",
-        "dob": {"d": 14, "m": 7, "y": 1913},
-        "dod": {"d": 26, "m": 12, "y": 2006},
-        "start": {"d": 9, "m": 8, "y": 1974},
-        "end": {"d": 20, "m": 1, "y": 1977},
-        "party": "Republican",
-        "elections": [],
-        "vp": "Nelson Rockefeller",
-        "race": "Caucasian",
-        "gender": "Male"
+        name: "Gerald Ford",
+        president: 38,
+        ageInauguration: {years: 61, days: 26},
+        ethnicity: "Caucasian",
+        gender: "Male",
+        party: "Republican",
+        elections: {year: 1976, won: false, opponent: "Jimmy Carter"}, 
+        tookOffice: {d: 9, m: 8, y: 1974},
+        leftOffice: {d: 20, m: 1, y: 1977},
+        reason: ["Placeholder", "Lost reelection"],
+        alive: false,
+        vp: {name: "Nelson Rockefeller", vicepresident: 41, ageInauguration: {years: 66, days: 164}, tookOffice: {d: 19, m: 12, y: 1974}, leftOffice: {d: 20, m: 1, y: 1977}, ethnicity: "Caucasian", gender: "Male"}
     },
     {
-        "no": 39,
-        "name": "Jimmy",
-        "surname": "Carter",
-        "dob": {"d": 1, "m": 10, "y": 1924},
-        "dod": "alive",
-        "start": {"d": 20, "m": 1, "y": 1977},
-        "end": {"d": 20, "m": 1, "y": 1981},
-        "party": "Democratic",
-        "elections": [1976],
-        "vp": "Walter Mondale",
-        "race": "Caucasian",
-        "gender": "Male"
+        name: "Jimmy Carter",
+        president: 39,
+        ageInauguration: {years: 52, days: 111},
+        ethnicity: "Caucasian",
+        gender: "Male",
+        party: "Democratic",
+        elections: [{year: 1976, won: true, opponent: "Gerald Ford"}, {year: 1980, won: false, opponent: "Ronald Reagan"}], 
+        tookOffice: {d: 20, m: 1, y: 1977},
+        leftOffice: {d: 20, m: 1, y: 1981},
+        reason: "Lost reelection",
+        alive: true,
+        vp: {name: "Walter Mondale", vicepresident: 42, ageInauguration: {years: 49, days: 15}, tookOffice: {d: 20, m: 1, y: 1977}, leftOffice: {d: 20, m: 1, y: 1981}, ethnicity: "Caucasian", gender: "Male"}
     },
     {
-        "no": 40,
-        "name": "Ronald",
-        "surname": "Reagan",
-        "dob": {"d": 6, "m": 2, "y": 1911},
-        "dod": {"d": 5, "m": 6, "y": 2004},
-        "start": {"d": 20, "m": 1, "y": 1981},
-        "end": {"d": 20, "m": 1, "y": 1989},
-        "party": "Republican",
-        "elections": [1980, 1984],
-        "vp": "George H. W. Bush",
-        "race": "Caucasian",
-        "gender": "Male"
+        name: "Ronald Reagan",
+        president: 40,
+        ageInauguration: {years: 69, days: 348},
+        ethnicity: "Caucasian",
+        gender: "Male",
+        party: "Republican",
+        elections: [{year: 1980, won: true, opponent: "Jimmy Carter"}, {year: 1984, won: true, opponent: "Walter Mondale"}], 
+        tookOffice: {d: 20, m: 1, y: 1981},
+        leftOffice: {d: 20, m: 1, y: 1989},
+        reason: "Term-limit",
+        alive: false,
+        vp: {name: "George H. W. Bush", vicepresident: 43, ageInauguration: {years: 56, days: 222}, tookOffice: {d: 20, m: 1, y: 1981}, leftOffice: {d: 20, m: 1, y: 1989}, ethnicity: "Caucasian", gender: "Male"}
     },
     {
-        "no": 41,
-        "name": "George H. W.",
-        "surname": "Bush",
-        "dob": {"d": 12, "m": 6, "y": 1924},
-        "dod": {"d": 30, "m": 11, "y": 2018},
-        "start": {"d": 20, "m": 1, "y": 1988},
-        "end": {"d": 20, "m": 1, "y": 1993},
-        "party": "Republican",
-        "elections": [1988],
-        "vp": "Dan Quayle",
-        "race": "Caucasian",
-        "gender": "Male"
+        name: "George H. W. Bush",
+        president: 41,
+        ageInauguration: {years: 64, days: 222},
+        ethnicity: "Caucasian",
+        gender: "Male",
+        party: "Republican",
+        elections: [{year: 1988, won: true, opponent: "Michael Dukakis"}, {year: 1992, won: false, opponent: "Bill Clinton"}], 
+        tookOffice: {d: 20, m: 1, y: 1989},
+        leftOffice: {d: 20, m: 1, y: 1993},
+        reason: "Lost reelection",
+        alive: false,
+        vp: {name: "Dan Quayle", vicepresident: 44, ageInauguration: {years: 41, days: 351}, tookOffice: {d: 20, m: 1, y: 1989}, leftOffice: {d: 20, m: 1, y: 1993}, ethnicity: "Caucasian", gender: "Male"}
     },
     {
-        "no": 42,
-        "name": "Bill",
-        "surname": "Clinton",
-        "dob": {"d": 19, "m": 4, "y": 1946},
-        "dod": "alive",
-        "start": {"d": 20, "m": 1, "y": 1993},
-        "end": {"d": 20, "m": 1, "y": 2001},
-        "party": "Democratic",
-        "elections": [1992, 1996],
-        "vp": "Al Gore",
-        "race": "Caucasian",
-        "gender": "Male"
+        name: "Bill Clinton",
+        president: 42,
+        ageInauguration: {years: 46, days: 154},
+        ethnicity: "Caucasian",
+        gender: "Male",
+        party: "Democratic",
+        elections: [{year: 1992, won: true, opponent: "George H. W. Bush"}, {year: 1996, won: true, opponent: "Bob Dole"}], 
+        tookOffice: {d: 20, m: 1, y: 1993},
+        leftOffice: {d: 20, m: 1, y: 2001},
+        reason: "Term-limit",
+        alive: true,
+        vp: {name: "Al Gore", vicepresident: 45, ageInauguration: {years: 44, days: 295}, tookOffice: {d: 20, m: 1, y: 1993}, leftOffice: {d: 20, m: 1, y: 2001}, ethnicity: "Caucasian", gender: "Male"}
     },
     {
-        "no": 43,
-        "name": "George W.",
-        "surname": "Bush",
-        "dob": {"d": 6, "m": 7, "y": 1946},
-        "dod": "alive",
-        "start": {"d": 20, "m": 1, "y": 2001},
-        "end": {"d": 20, "m": 1, "y": 2009},
-        "party": "Republican",
-        "elections": [2000, 2004],
-        "vp": "Dick Cheney",
-        "race": "Caucasian",
-        "gender": "Male"
+        name: "George W. Bush",
+        president: 43,
+        ageInauguration: {years: 54, days: 198},
+        ethnicity: "Caucasian",
+        gender: "Male",
+        party: "Republican",
+        elections: [{year: 2000, won: true, opponent: "Al Gore"}, {year: 2004, won: true, opponent: "John Kerry"}], 
+        tookOffice: {d: 20, m: 1, y: 2001},
+        leftOffice: {d: 20, m: 1, y: 2009},
+        reason: "Term-limit",
+        alive: true,
+        vp: {name: "Dick Cheney", vicepresident: 46, ageInauguration: {years: 59, days: 356}, tookOffice: {d: 20, m: 1, y: 2001}, leftOffice: {d: 20, m: 1, y: 2009}, ethnicity: "Caucasian", gender: "Male"}
     },
     {
-        "no": 44,
-        "name": "Barack",
-        "surname": "Obama",
-        "dob": {"d": 4, "m": 8, "y": 1961},
-        "dod": "alive",
-        "start": {"d": 20, "m": 1, "y": 2009},
-        "end": {"d": 20, "m": 1, "y": 2017},
-        "party": "Democratic",
-        "elections": [2008, 2012],
-        "vp": "Joe Biden",
-        "race": "African-American",
-        "gender": "Male"
+        name: "Barack Obama",
+        president: 44,
+        ageInauguration: {years: 47, days: 169},
+        ethnicity: "Mixed",
+        gender: "Male",
+        party: "Democratic",
+        elections: [{year: 2008, won: true, opponent: "John McCain"}, {year: 2012, won: true, opponent: "Mitt Romney"}],
+        tookOffice: {d: 20, m: 1, y: 2009},
+        leftOffice: {d: 20, m: 1, y: 2017},
+        reason: "Term-limit",
+        alive: true,
+        vp: {name: "Joe Biden", vicepresident: 47, ageInauguration: {years: 66, days: 61}, tookOffice: {d: 20, m: 1, y: 2009}, leftOffice: {d: 20, m: 1, y: 2017}, ethnicity: "Caucasian", gender: "Male"}
     },
     {
-        "no": 45,
-        "name": "Donald",
-        "surname": "Trump",
-        "dob": {"d": 14, "m": 6, "y": 1946},
-        "dod": "alive",
-        "start": {"d": 20, "m": 1, "y": 2017},
-        "end": {"d": 20, "m": 1, "y": 2021},
-        "party": "Republican",
-        "elections": [2016],
-        "vp": "Mike Pence",
-        "race": "Clown",
-        "gender": "Male"
+        name: "Donald J. Trump",
+        president: 45,
+        ageInauguration: {years: 70, days: 220},
+        ethnicity: "Caucasian",
+        gender: "Male",
+        party: "Republican",
+        elections: [{year: 2016, won: true, opponent: "Hillary Clinton"}, {year: 2020, won: false, opponent: "Joe Biden"}],
+        tookOffice: {d: 20, m: 1, y: 19},
+        leftOffice: {d: 20, m: 1, y: 19},
+        reason: "Lost reelection",
+        alive: true,
+        vp: {name: "Mike Pence", vicepresident: 48, ageInauguration: {years: 57, days: 227}, tookOffice: {d: 20, m: 1, y: 2017}, leftOffice: {d: 20, m: 1, y: 2021}, ethnicity: "Caucasian", gender: "Male"}
     },
     {
-        "no": 46,
-        "name": "Joe",
-        "surname": "Biden",
-        "dob": {"d": 20, "m": 11, "y": 1942},
-        "dod": "alive",
-        "start": {"d": 20, "m": 1, "y": 2021},
-        "end": "president-elect",
-        "party": "Democratic",
-        "elections": [2020],
-        "vp": "Kamala Harris",
-        "race": "Caucasian",
-        "gender": "Male"
+        name: "Joe Biden",
+        president: 46,
+        ageInauguration: {years: 78, days: 61},
+        ethnicity: "Caucasian",
+        gender: "Male",
+        party: "Democratic",
+        elections: {year: 2020, won: true, opponent: "Donald J. Trump"}, 
+        tookOffice: {d: 20, m: 1, y: 2021},
+        leftOffice: undefined,
+        reason: "Incumbent",
+        alive: true,
+        vp: {name: "Kamala Harris", vicepresident: 49, ageInauguration: {years: 56, days: 92}, tookOffice: {d: 20, m: 1, y: 2021}, leftOffice: undefined, ethnicity: "Mixed", gender: "Female"}
     }
 ]
 
 // HIGHER ORDER FUNCTIONS
 
+// forEach
+
+presidents.forEach
+
+// Filter
+
+
+
+
+
+
+
+
 // EMOJIFY PRESIDENTS
-// Here we want to create a new array of an emoji for each president depending on data of how old they were when they took office, their race and gender.
+// Here we want to create a new array of an emoji for each president depending on data of how old they were when they took office, their ethnicity and gender and the same information for their vice presidents.
 
-// 1. Get age of each president at start
+// const btn = document.querySelector('.button');
 
-// 2. Create new array with number, age, race and gender.
+// btn.addEventListener('click', e => {
+//     console.log(presidents);
 
-// 3. Convert age+race+gender into relevant emoji
+//     const emojis = presidents.map(president => president.ageInauguration.years >= 67 ? 'Old' : 'Not Old')
+
+//     console.log(emojis);
+//     console.log(presidents);
+// })
