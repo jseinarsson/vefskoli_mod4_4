@@ -17,7 +17,8 @@ fetch('https://restcountries.eu/rest/v2/all')
         body.innerHTML = `<h1>Something went wrong... please try refreshing the page.</h1>`
     });
 
-// Flag builder --> uses the array.map function to create a text string with HTML and adds it to a new array called "flagsHTML", then uses array.join to join the objects in the array together to add it to the innerHTML of the flagcontainer .flags
+// FLAG BUILDER
+// Uses the array.map function to create a text string with HTML and adds it to a new array called "flagsHTML", then uses array.join to join the objects in the array together to add it to the innerHTML of the flagcontainer .flags
 function getFlags(selectedCountries) {
     const flagContainer = document.querySelector('.flags');
     flagContainer.innerHTML = "";
@@ -52,50 +53,34 @@ function getFlags(selectedCountries) {
     flagContainer.innerHTML = flagsHTML.join("");
 }
 
+// FILTER AND SORT
 const selectors = document.querySelectorAll('select');
 
+// Adds event listener for every selector on the page.
 selectors.forEach(select => {
     select.addEventListener('change', () => {
         const filter = document.querySelector('select[name="filter"]');
         const sort = document.querySelector('select[name="sort"]');
-
-        // filteredSorted(filter.selectedOptions[0].id, sort.selectedOptions[0].id);    
-        // filteredSorted(filter.selectedOptions[0].id, sort.selectedOptions[0].id);    
+        
+        // Some nested functions here. getFlags(selectedCountries) takes one parameter --> the result of sortCountries(sortOpt, countryList), which takes two parameters --> sortOpt is the selected option in the sort selection element in the HTML, countryList is the result of the filterContries(region) which takes one parameter --> the selected option in the filter selection element in the HTML
         getFlags(sortCountries(sort.selectedOptions[0].id, filterCountries(filter.selectedOptions[0].id)));
     })
 })
 
-function filteredSorted(region, sortOpt) {
-
-    const filteredSortedCountries = sortedCountries(sortOpt, filterCountries(region));
-
-    console.log(filteredSortedCountries);
-    // getFlags(filteredSortedCountries);
-    // if (reguon === 'All') 
-
-    // // Function checks whether passed in info is the "default", ie. region All and sorted Alphabetically, in which case it uses the getFlags builder with the default countries object.
-
-    // //&& sort === "alpha"
-    // if (region === 'All') {
-    //     getFlags(countries);
-    // } else {
-    //     const countriesInRegion = countries.filter(country => country.region === region);
-
-    //     getFlags(countriesInRegion);
-    // }
-}
-
+// FILTER COUNTRIES
 function filterCountries(region) {
     if (region === 'All') {
         return countries;
     }
-
+    // First checks if the region is all 'all' in which case it returns the countries list, if not, we use array.filter to filter out the countries whose country.region value matches the selected region. This arrow function only adds the country if country.region === region returns true.
     return countries.filter(country => country.region === region);
 }
 
+// SORT COUNTRIES
 // This was an interesting one to change to functional programming --> here I would probably have used a switch statement (at the very least an if/else if/else chain...), but I found that it's possible to replace these options with "object literals", which are preferred in functional programming (see this link: https://ultimatecourses.com/blog/deprecating-the-switch-statement-for-object-literals)
 
 function sortCountries(sortOpt, countryList) {
+    // Each of these options returns a newly sorted array. countryList.sort takes in two parameters (a and b) and checks the value/order of each against each other, moving it up and down in the array accordingly.
     const options = {
         'alpha' : function() {
             return countryList.sort((a, b) => (a.alpha3Code > b.alpha3Code ? 1 : -1));
@@ -116,61 +101,4 @@ function sortCountries(sortOpt, countryList) {
 
     const sortedList = (options[sortOpt] || options['default'])();
     return sortedList
-    //console.log(sortedList);
-
-    // return (options[sortOpt] || options['default'])();
 }
-
-
-// FILTER COUNTRY FLAGS BY REGION
-// Targets all the HTML elements with the class of ".region__btn"
-// const regionBtns = document.querySelectorAll('.region__btn');
-
-// // For each button it'll run an event listener, if clicked it will run the function filteredCountries, passing in the ID of the btn
-// regionBtns.forEach(btn => {
-//     btn.addEventListener('click', e => {
-//         e.preventDefault;
-//         filteredSorted(btn.id);
-//     })
-// })
-
-// function filteredSorted(region, sort) {
-//     // Function checks whether passed in region is equal to all, if not, it uses array.filter to create a new object with just the countries that have a country.region equal to the passed in region and then runs the getFlags builder with the new object.
-//     if (region === 'All') {
-//         getFlags(countries);
-//     } else {
-//         const countriesInRegion = countries.filter(country => country.region === region);
-
-//         getFlags(countriesInRegion);
-//     }
-// }
-
-// // REORDER LIST BY VALUE
-// const sortBtns = document.querySelectorAll('.sort__btn');
-
-// sortBtns.forEach(btn => {
-//     btn.addEventListener('click', e => {
-//         e.preventDefault;
-//         sortedCountries(btn.id);
-//     })
-// })
-
-// function sortedCountries(sorted) {
-//     switch(sorted) {
-//         case "alpha":
-//             //do something
-//             break;
-//         case "alphaReverse":
-//             //do something
-//             break;
-//         case "popHigh":
-//             //do something
-//             break;
-//         case "popLow":
-//             //do something
-//             break;
-//         default:
-//             getFlags(countries);
-//             break;
-//     }
-// }
