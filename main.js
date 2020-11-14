@@ -1,67 +1,106 @@
-// // GET THE WORLD COUNTRIES API
-// // Just the same method I used in the API Guide
-// let countries = [];
-
-// async function loadCountries() {
-//     const res = await fetch('https://restcountries.eu/rest/v2/all');
-
-//     if (!res.ok) {
-//         throw new Error('Network response error');
-//     } else {
-//         return await res.json();
-//     }
-// }
-
-// document.addEventListener("DOMContentLoaded", async () => {
-//     const body = document.querySelector("body");
-
-//     try {
-//         countries = await loadCountries();
-//     } catch (err) {
-//         console.log(`Attn! ${err}`);
-//         body.innerHTML = (`<h1>Something went wrong... please try refreshing the page.</h1>`);
-//     }
-
-//     return countries;
-// });
-
+// In the functional programming paradigm you should avoid using let to define a variable, as they are mallable. This is the only way I know how to create a reusable object with the data from the API however and it's the way that Pedro showed in the Live Coding session.
+// However, this object will not be changed in the code after the data has been assigned to it, so in that way, it is in the spirit of functional programming.
 let countries = [];
 
 //GET WORLD COUNTRIES
-
 fetch('https://restcountries.eu/rest/v2/all')
     .then(res => {
-        if (!res.ok) { throw new Error('Network response error') } else { return res.json() }
+        if (!res.ok) { throw new Error('network response error') } else { return res.json() }
         })
     .then(data => {
         countries = data;
-        console.log(countries);
-        getFlags(countries);
+        getFlags(countries); //Passes countries into the getFlags HTML builder function
     })
     .catch(err => {
+        const body = document.querySelector("body");
         console.log(`Error! ${err}`)
-        
+        body.innerHTML = `<h1>Something went wrong... please try refreshing the page.</h1>`
     });
 
-
-function getFlags(countries) {
+// Flag builder --> uses the array.map function to create a text string with HTML and adds it to a new array called "flagsHTML", then uses array.join to join the objects in the array together to add it to the innerHTML of the flagcontainer .flags
+function getFlags(selectedCountries) {
     const flagContainer = document.querySelector('.flags');
     flagContainer.innerHTML = "";
 
-    const flagsHTML = countries.map(country => {
-        return `
-
-        
-        <div class="country">
-            <img src="${country.flag}" alt="The flag of ${country.name}">
-            <div class="info">
-            <h3>${country.name}</h3>
-            <p><span>Capital:</span> ${country.capital}</p>
-            <p><span>Region:</span> ${country.subregion}</p>
+    const flagsHTML = selectedCountries.map(country => {
+        // Checking if the country name is the same in the native language and in English, if not it prints both names
+        if (country.name === country.nativeName) {
+            return `
+            <div class="country">
+                <img src="${country.flag}" alt="The flag of ${country.name}">
+                <div class="info">
+                <h3>${country.name}</h3>
+                <p><span>Capital:</span> ${country.capital}</p>
+                <p><span>Region:</span> ${country.subregion}</p>
+                </div>
             </div>
-        </div>
-        `
+            `
+        } else {
+            return `
+            <div class="country">
+                <img src="${country.flag}" alt="The flag of ${country.name}">
+                <div class="info">
+                <h3>${country.name}<br>${country.nativeName}</h3>
+                <p><span>Capital:</span> ${country.capital}</p>
+                <p><span>Region:</span> ${country.subregion}</p>
+                </div>
+            </div>
+            `
+        }
     })
 
     flagContainer.innerHTML = flagsHTML.join("");
 }
+
+// FILTER COUNTRY FLAGS BY REGION
+// Targets all the HTML elements with the class of ".region__btn"
+const regionBtns = document.querySelectorAll('.region__btn');
+
+// For each button it'll run an event listener, if clicked it will run the function filteredCountries, passing in the ID of the btn
+regionBtns.forEach(btn => {
+    btn.addEventListener('click', e => {
+        e.preventDefault;
+        filteredCountries(btn.id);
+    })
+})
+
+function filteredCountries(region) {
+    // Function checks whether passed in region is equal to all, if not, it uses array.filter to create a new object with just the countries that have a country.region equal to the passed in region and then runs the getFlags builder with the new object.
+    if (region === 'All') {
+        getFlags(countries);
+    } else {
+        const countriesInRegion = countries.filter(country => country.region === region);
+
+        getFlags(countriesInRegion);
+    }
+}
+
+// // REORDER LIST BY VALUE
+// const sortBtns = document.querySelectorAll('.sort__btn');
+
+// sortBtns.forEach(btn => {
+//     btn.addEventListener('click', e => {
+//         e.preventDefault;
+//         sortedCountries(btn.id);
+//     })
+// })
+
+// function sortedCountries(sorted) {
+//     switch(sorted) {
+//         case "alpha":
+//             //do something
+//             break;
+//         case "alphaReverse":
+//             //do something
+//             break;
+//         case "popHigh":
+//             //do something
+//             break;
+//         case "popLow":
+//             //do something
+//             break;
+//         default:
+//             getFlags(countries);
+//             break;
+//     }
+// }
