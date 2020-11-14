@@ -52,28 +52,98 @@ function getFlags(selectedCountries) {
     flagContainer.innerHTML = flagsHTML.join("");
 }
 
-// FILTER COUNTRY FLAGS BY REGION
-// Targets all the HTML elements with the class of ".region__btn"
-const regionBtns = document.querySelectorAll('.region__btn');
+const selectors = document.querySelectorAll('select');
 
-// For each button it'll run an event listener, if clicked it will run the function filteredCountries, passing in the ID of the btn
-regionBtns.forEach(btn => {
-    btn.addEventListener('click', e => {
-        e.preventDefault;
-        filteredCountries(btn.id);
+selectors.forEach(select => {
+    select.addEventListener('change', () => {
+        const filter = document.querySelector('select[name="filter"]');
+        const sort = document.querySelector('select[name="sort"]');
+
+        // filteredSorted(filter.selectedOptions[0].id, sort.selectedOptions[0].id);    
+        // filteredSorted(filter.selectedOptions[0].id, sort.selectedOptions[0].id);    
+        getFlags(sortCountries(sort.selectedOptions[0].id, filterCountries(filter.selectedOptions[0].id)));
     })
 })
 
-function filteredCountries(region) {
-    // Function checks whether passed in region is equal to all, if not, it uses array.filter to create a new object with just the countries that have a country.region equal to the passed in region and then runs the getFlags builder with the new object.
-    if (region === 'All') {
-        getFlags(countries);
-    } else {
-        const countriesInRegion = countries.filter(country => country.region === region);
+function filteredSorted(region, sortOpt) {
 
-        getFlags(countriesInRegion);
-    }
+    const filteredSortedCountries = sortedCountries(sortOpt, filterCountries(region));
+
+    console.log(filteredSortedCountries);
+    // getFlags(filteredSortedCountries);
+    // if (reguon === 'All') 
+
+    // // Function checks whether passed in info is the "default", ie. region All and sorted Alphabetically, in which case it uses the getFlags builder with the default countries object.
+
+    // //&& sort === "alpha"
+    // if (region === 'All') {
+    //     getFlags(countries);
+    // } else {
+    //     const countriesInRegion = countries.filter(country => country.region === region);
+
+    //     getFlags(countriesInRegion);
+    // }
 }
+
+function filterCountries(region) {
+    if (region === 'All') {
+        return countries;
+    }
+
+    return countries.filter(country => country.region === region);
+}
+
+// This was an interesting one to change to functional programming --> here I would probably have used a switch statement (at the very least an if/else if/else chain...), but I found that it's possible to replace these options with "object literals", which are preferred in functional programming (see this link: https://ultimatecourses.com/blog/deprecating-the-switch-statement-for-object-literals)
+
+function sortCountries(sortOpt, countryList) {
+    const options = {
+        'alpha' : function() {
+            return countryList.sort((a, b) => (a.alpha3Code > b.alpha3Code ? 1 : -1));
+        },
+        'alphaRev' : function() {
+            return countryList.sort((a, b) => (a.alpha3Code < b.alpha3Code ? 1 : -1));
+        },
+        'popLow' : function() {
+            return countryList.sort((a, b) => (a.population > b.population ? 1 : -1));
+        },
+        'popHigh' : function() {
+            return countryList.sort((a, b) => (a.population < b.population ? 1 : -1));
+        },
+        'default' : function() {
+            return countryList
+        }
+    };
+
+    const sortedList = (options[sortOpt] || options['default'])();
+    return sortedList
+    //console.log(sortedList);
+
+    // return (options[sortOpt] || options['default'])();
+}
+
+
+// FILTER COUNTRY FLAGS BY REGION
+// Targets all the HTML elements with the class of ".region__btn"
+// const regionBtns = document.querySelectorAll('.region__btn');
+
+// // For each button it'll run an event listener, if clicked it will run the function filteredCountries, passing in the ID of the btn
+// regionBtns.forEach(btn => {
+//     btn.addEventListener('click', e => {
+//         e.preventDefault;
+//         filteredSorted(btn.id);
+//     })
+// })
+
+// function filteredSorted(region, sort) {
+//     // Function checks whether passed in region is equal to all, if not, it uses array.filter to create a new object with just the countries that have a country.region equal to the passed in region and then runs the getFlags builder with the new object.
+//     if (region === 'All') {
+//         getFlags(countries);
+//     } else {
+//         const countriesInRegion = countries.filter(country => country.region === region);
+
+//         getFlags(countriesInRegion);
+//     }
+// }
 
 // // REORDER LIST BY VALUE
 // const sortBtns = document.querySelectorAll('.sort__btn');

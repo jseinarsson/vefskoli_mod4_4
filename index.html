@@ -10,13 +10,41 @@
 <body>
     <div class="menu">
         <h1>World flags</h1>
-        <div class="filters">
-            <button id="All" class="region__btn">All</button>
+        <select name="filter" id="filter">
+            <option id="All">All</option>
+            <option id="Africa">Africa</option>
+            <option id="Asia">Asia</option>
+            <option id="Europe">Europe</option>
+            <option id="Oceania">Oceania</option>
+            <option id="Americas">The Americas</option>
+        </select>
+        <select name="sort" id="sort">
+            <option id="alpha">Alphabetical</option>
+            <option id="alphaRev">Reverse Alphabetical</option>
+            <option id="popLow">Population: Low to High</option>
+            <option id="popHigh">Population: Hight to Low</option>
+        </select>
+
+        <!-- <div class="filters">
+           <button id="All" class="region__btn">All</button>
+            <button id="Africa" class="region__btn">Africa</button>
             <button id="Asia" class="region__btn">Asia</button>
             <button id="Europe" class="region__btn">Europe</button>
             <button id="Oceania" class="region__btn">Oceania</button>
             <button id="Americas" class="region__btn">The Americas</button>
+            <div><input type="radio" id="All" class="region__radio" name="region" value="All" checked><label for="All">All</label></div>
+            <div><input type="radio" id="Africa" class="region__radio" name="region" value="Africa"><label for="Africa">Africa</label></div>
+            <div><input type="radio" id="Asia" class="region__radio" name="region" value="Asia"><label for="Asia">Asia</label></div>
+            <div><input type="radio" id="Europe" class="region__radio" name="region" value="Europe"><label for="Europe">Europe</label></div>
+            <div><input type="radio" id="Oceania" class="region__radio" name="region" value="Oceania"><label for="Oceania">Oceania</label></div>
+            <div><input type="radio" id="Americas" class="region__radio" name="region" value="Americas"><label for="Americas">The Americas</label></div>
         </div>
+        <div class="sorting">
+            <div><input type="radio" id="alpha" class="sort__radio" name="sorting" value="alpha" checked><label for="alpha">Alphabetical</label></div>
+            <div><input type="radio" id="alphaRev" class="sort__radio" name="sorting" value="alphaRev"><label for="alphaRev">Reverse Alphabetical</label></div>
+            <div><input type="radio" id="popHigh" class="sort__radio" name="sorting" value="popHigh"><label for="popHigh">Population: High-low</label></div>
+            <div><input type="radio" id="popLow" class="sort__radio" name="sorting" value="popLow"><label for="popLow">Population: Low-high</label></div>
+        </div> -->
     </div>
     <div class="flags">
         <!--INJECT FLAGS HERE-->
